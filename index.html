@@ -1,1 +1,2611 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>تحفيظ القرآن للأطفال</title>
 
+<style>
+*{box-sizing:border-box}
+
+body{
+font-family:Tahoma,Arial;
+direction:rtl;
+text-align:center;
+background:linear-gradient(180deg,#eaf5ff,#fff8e9);
+padding:12px;
+margin:0;
+color:#243047;
+}
+
+.app{max-width:850px;margin:auto}
+
+h2{color:#176b87;margin:18px 0}
+
+.top{
+background:#fff;
+padding:15px;
+border-radius:18px;
+box-shadow:0 3px 12px #00000012;
+margin-bottom:12px;
+}
+
+.stats{
+display:flex;
+justify-content:space-around;
+gap:8px;
+flex-wrap:wrap;
+}
+
+.stat{
+background:#e9f7ff;
+padding:12px;
+border-radius:12px;
+min-width:85px;
+flex:1;
+}
+
+.stat strong{
+display:block;
+font-size:21px;
+color:#087b9e;
+margin-top:5px;
+}
+
+select,button{
+padding:11px;
+margin:5px;
+font-size:15px;
+border-radius:10px;
+border:1px solid #d5e1e8;
+font-family:Tahoma;
+}
+
+select{background:white;max-width:100%}
+
+button{
+background:#1685a5;
+color:white;
+border:0;
+cursor:pointer;
+}
+
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5}
+
+.secondary{background:#536b82}
+.green{background:#15966b}
+.orange{background:#e89a27}
+.pink{background:#d65a8a}
+.purple{background:#8064b5}
+.red{background:#d9534f}
+
+.ayah{
+background:#fff;
+padding:25px 15px;
+border-radius:16px;
+font-size:26px;
+line-height:2.2;
+max-width:900px;
+margin:12px auto;
+color:#263b4a;
+box-shadow:0 3px 12px #00000012;
+min-height:110px;
+white-space:pre-line;
+}
+
+.info{color:#536b82;margin:12px;font-size:15px}
+
+.progress-box{
+background:#fff;
+padding:13px;
+border-radius:13px;
+margin:12px auto;
+}
+
+.progress{
+height:13px;
+background:#e4edf1;
+border-radius:20px;
+overflow:hidden;
+margin-top:8px;
+}
+
+.progress-fill{
+height:100%;
+width:0%;
+background:#19a77a;
+transition:width .3s;
+}
+
+.goal-fill{
+height:100%;
+width:0%;
+background:#e89a27;
+transition:width .3s;
+}
+
+.controls{
+background:#fff;
+padding:12px;
+border-radius:15px;
+margin:12px auto;
+}
+
+.quiz{
+background:#fff;
+padding:17px;
+margin-top:15px;
+border-radius:15px;
+display:none;
+box-shadow:0 3px 12px #00000012;
+}
+
+.quiz-option{
+display:block;
+width:100%;
+background:#e9f5fb;
+color:#263b4a;
+border:1px solid #c9e3ee;
+margin:8px 0;
+line-height:1.9;
+}
+
+.quiz-option:disabled{opacity:1}
+
+.message{
+color:#087b65;
+font-weight:bold;
+margin:10px;
+}
+
+.small{font-size:13px;color:#718096}
+
+.extra-box{
+background:#fff;
+padding:15px;
+border-radius:15px;
+margin:12px auto;
+box-shadow:0 3px 12px #00000012;
+}
+
+.extra-box h3{color:#176b87;margin-top:5px}
+
+.tafseer-box{
+display:none;
+background:#fff9e8;
+border:1px solid #f0d99b;
+border-radius:13px;
+padding:15px;
+margin:12px auto;
+text-align:right;
+line-height:2;
+color:#38465a;
+white-space:pre-line;
+max-height:300px;
+overflow-y:auto;
+}
+
+.tafseer-title{
+font-weight:bold;
+color:#98651b;
+margin-bottom:8px;
+}
+
+.hidden-ayah{
+color:#1685a5;
+font-size:23px;
+font-weight:bold;
+}
+
+.review-note{
+background:#eaf7ff;
+padding:10px;
+border-radius:10px;
+font-size:14px;
+color:#536b82;
+}
+
+.due-box{
+background:#fff3e0;
+padding:10px;
+border-radius:10px;
+font-size:14px;
+color:#8a5a00;
+margin:10px 0;
+}
+
+.recog-result{
+display:none;
+background:#f5fbff;
+border:1px solid #cde7f3;
+border-radius:13px;
+padding:14px;
+margin:12px auto;
+text-align:right;
+line-height:2.2;
+}
+
+.recog-result .score{
+font-size:20px;
+font-weight:bold;
+text-align:center;
+color:#176b87;
+}
+
+.recog-result .words{font-size:22px;margin:8px 0}
+.w-ok{color:#15966b;font-weight:bold}
+.w-bad{color:#d9534f;font-weight:bold;text-decoration:underline}
+
+.heard{font-size:13px;color:#718096}
+
+.cloze-q{
+font-size:24px;
+line-height:2.2;
+background:#fff9e8;
+border-radius:12px;
+padding:12px;
+margin:10px 0;
+}
+
+.badges{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(105px,1fr));
+gap:8px;
+margin-top:10px;
+}
+
+.badge{
+background:#fff3c4;
+border:1px solid #f0d99b;
+border-radius:12px;
+padding:10px 4px;
+font-size:13px;
+}
+
+.badge .ic{font-size:28px;display:block}
+.badge.locked{filter:grayscale(1);opacity:.45}
+
+.bars{
+display:flex;
+align-items:flex-end;
+justify-content:space-around;
+height:120px;
+margin:14px 0 4px;
+gap:6px;
+}
+
+.bar-col{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+align-items:center;
+height:100%;
+}
+
+.bar{
+width:70%;
+background:#19a77a;
+border-radius:6px 6px 0 0;
+min-height:3px;
+}
+
+.bar-num{font-size:12px;color:#536b82}
+.bar-day{font-size:11px;color:#718096;margin-top:3px}
+
+.parent-line{
+text-align:right;
+background:#f3f8fb;
+padding:8px 10px;
+border-radius:10px;
+margin:6px 0;
+font-size:15px;
+}
+
+.toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%) translateY(120px);
+background:#243047;
+color:#fff;
+padding:12px 18px;
+border-radius:25px;
+font-size:15px;
+transition:transform .35s;
+z-index:99;
+max-width:90%;
+}
+
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+footer{padding:15px;color:#708090;font-size:13px}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="top">
+<h2>📖 تحفيظ القرآن الكريم للأطفال</h2>
+<p>🌟 احفظ آية جديدة كل يوم 🌟</p>
+
+<div class="stats">
+
+<div class="stat">
+⭐ نقاطي
+<strong id="points">0</strong>
+</div>
+
+<div class="stat">
+🏅 إنجازاتي
+<strong id="stars">0</strong>
+</div>
+
+<div class="stat">
+🔥 أيام متتالية
+<strong id="streak">0</strong>
+</div>
+
+<div class="stat">
+📖 آخر سورة
+<strong id="lastSurah">الفاتحة</strong>
+</div>
+
+</div>
+
+<div style="margin-top:14px">
+<strong>🎯 هدف اليوم</strong>
+<div class="progress">
+<div class="goal-fill" id="goalFill"></div>
+</div>
+<p id="goalText" class="small"></p>
+</div>
+
+</div>
+
+<select id="surah" onchange="changeSurah()"></select>
+
+<select id="reciter">
+<option value="afasy">العفاسي</option>
+<option value="husary">الحصري</option>
+<option value="minshawi">المنشاوي</option>
+</select>
+
+<select id="speed" onchange="changeSpeed()">
+<option value="0.75">🐢 بطيء</option>
+<option value="1" selected>⏱ عادي</option>
+<option value="1.25">🐇 سريع</option>
+</select>
+
+<div class="ayah" id="text">جاري تحميل القرآن الكريم...</div>
+
+<div class="info" id="info"></div>
+
+<div class="progress-box">
+<strong>🌱 تقدمك في السورة</strong>
+<div class="progress">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<p id="progressText" class="small"></p>
+</div>
+
+<div class="controls">
+
+<button onclick="play()">▶ تشغيل</button>
+<button class="secondary" onclick="pause()">⏸ إيقاف</button>
+
+<br>
+
+<button class="orange" onclick="repeatToggle()">
+🔁 تكرار مستمر <span id="rep">OFF</span>
+</button>
+
+<br>
+
+<label>عدد مرات تكرار الآية:</label>
+
+<select id="repeatCount">
+<option value="1">مرة واحدة</option>
+<option value="3" selected>3 مرات</option>
+<option value="5">5 مرات</option>
+<option value="10">10 مرات</option>
+</select>
+
+<p class="small">عند التشغيل، تتكرر الآية بالعدد المختار ثم ينتقل التطبيق للتالية.</p>
+
+<button class="green" onclick="prev()">⏮ الآية السابقة</button>
+<button class="green" onclick="next()">⏭ الآية التالية</button>
+
+<br>
+
+<button class="secondary" onclick="prevSurah()">📖 سورة سابقة</button>
+<button class="secondary" onclick="nextSurah()">📖 سورة تالية</button>
+
+<hr style="border:0;border-top:1px solid #e4edf1;margin:12px 0">
+
+<strong>✂️ تكرار مقطع من الآية</strong>
+<p class="small">شغّل الآية، واضغط "بداية" عند المكان اللي تبدأ منه، و"نهاية" عند المكان اللي تقف عنده، والمقطع هيتكرر.</p>
+
+<button class="purple" onclick="markSegStart()">📍 بداية المقطع</button>
+<button class="purple" onclick="markSegEnd()">📍 نهاية المقطع</button>
+<button class="secondary" onclick="clearSeg(true)">❌ إلغاء المقطع</button>
+
+<p id="segMessage" class="message"></p>
+
+</div>
+
+<!-- وضع الحفظ -->
+<div class="extra-box">
+
+<h3>🧠 وضع الحفظ والتسميع</h3>
+
+<p class="small">
+استمع إلى الآية وكررها، ثم أخفِ النص وسمّعها بصوتك.
+</p>
+
+<button class="purple" id="hideBtn" onclick="toggleHide()">
+🤫 إخفاء الآية
+</button>
+
+<button class="green" onclick="play()">
+🎧 استمع للآية
+</button>
+
+<p id="memorizeMessage" class="message"></p>
+
+<hr style="border:0;border-top:1px solid #e4edf1;margin:12px 0">
+
+<strong>🎤 سمّع وصحّح تلقائيًا</strong>
+<p class="small">اضغط الزر واقرأ الآية بصوت واضح، والتطبيق يبيّن الكلمات الصح والغلط.</p>
+
+<button class="orange" id="recogBtn" onclick="startRecognition()">🎤 سمّع وصحّح</button>
+
+<p id="recogMessage" class="message"></p>
+
+<div class="recog-result" id="recogResult"></div>
+
+<hr style="border:0;border-top:1px solid #e4edf1;margin:12px 0">
+
+<strong>🎙 سجّل صوتك واسمعه</strong>
+<p class="small">سجّل صوتك، واسمعه، وقارنه بصوت القارئ.</p>
+
+<button class="pink" id="recBtn" onclick="toggleRecord()">🎙 سجّل صوتي</button>
+
+<p id="recMessage" class="message"></p>
+
+<audio id="myRec" controls style="display:none;width:100%;margin:8px 0"></audio>
+
+<button class="purple" id="compareBtn" style="display:none" onclick="compareRec()">🔀 قارن: القارئ ثم صوتي</button>
+
+<hr style="border:0;border-top:1px solid #e4edf1;margin:12px 0">
+
+<button class="pink" onclick="markMemorized()">
+📌 أضف السورة إلى سور أحفظها
+</button>
+
+<button class="orange" onclick="completeSurah()">
+🏆 أتممت حفظ السورة
+</button>
+
+<p class="small">
+التصحيح التلقائي بيراجع الكلمات فقط، ولا يحكم على التجويد ولا مخارج الحروف. راجع حفظك مع معلم أو شيخ.
+</p>
+
+</div>
+
+<!-- كمّل الآية -->
+<div class="extra-box">
+
+<h3>🔤 كمّل الآية</h3>
+
+<p class="small">اختبار سريع: اختر الكلمة الناقصة من آية في السورة الحالية.</p>
+
+<button class="green" onclick="startCloze()">🔤 ابدأ اختبار كمّل الآية</button>
+
+<p id="clozeMsg" class="message"></p>
+
+<div id="clozeArea" style="display:none">
+<div class="cloze-q" id="clozeQ"></div>
+<div id="clozeOptions"></div>
+<p id="clozeResult" class="message"></p>
+<button id="clozeNext" class="green" style="display:none" onclick="startCloze()">سؤال جديد 🌟</button>
+</div>
+
+</div>
+
+<!-- وضع المراجعة -->
+<div class="extra-box">
+
+<h3>🔄 مراجعة السور المحفوظة</h3>
+
+<p class="review-note">
+هنا ستجد السور التي أضفتها إلى قائمة السور المحفوظة. السور اللي عليها ⏰ محتاجة مراجعة.
+</p>
+
+<div class="due-box" id="dueMessage"></div>
+
+<select id="reviewSurah">
+<option value="">اختر سورة للمراجعة</option>
+</select>
+
+<br>
+
+<button class="green" onclick="startReview()">
+📖 ابدأ المراجعة
+</button>
+
+<button class="orange" onclick="reviewOldest()">
+⏰ راجع الأقدم
+</button>
+
+<button class="secondary" onclick="refreshReviewList()">
+🔄 تحديث القائمة
+</button>
+
+<p id="reviewMessage" class="message"></p>
+
+</div>
+
+<!-- التفسير -->
+<div class="extra-box">
+
+<h3>💡 افهم معنى الآية</h3>
+
+<p class="small">
+اضغط على الزر لعرض تفسير الآية الحالية من التفسير الميسر.
+</p>
+
+<button class="orange" onclick="showTafseer()">
+💡 افهم الآية الحالية
+</button>
+
+<div class="tafseer-box" id="tafseerBox">
+<div class="tafseer-title" id="tafseerTitle"></div>
+<div id="tafseerText"></div>
+<p class="small">المصدر: التفسير الميسر.</p>
+</div>
+
+</div>
+
+<!-- الشارات -->
+<div class="extra-box">
+
+<h3>🎖 شاراتي</h3>
+
+<div class="badges" id="badgesBox"></div>
+
+</div>
+
+<!-- ولي الأمر -->
+<div class="extra-box">
+
+<h3>👨‍👩‍👧 صفحة ولي الأمر</h3>
+
+<button class="secondary" onclick="toggleParent()">📊 عرض / إخفاء تقدم الطفل</button>
+
+<div id="parentBox" style="display:none">
+
+<div id="parentStats"></div>
+
+<strong>📅 آخر 7 أيام (آيات سُمّعت صح)</strong>
+<div class="bars" id="parentBars"></div>
+
+<label>🎯 الهدف اليومي:</label>
+<select id="goalSelect" onchange="changeGoal()">
+<option value="1">آية واحدة</option>
+<option value="2">آيتان</option>
+<option value="3">3 آيات</option>
+<option value="5">5 آيات</option>
+<option value="10">10 آيات</option>
+</select>
+
+<br>
+
+<button class="red" id="resetBtn" onclick="resetAll()">🗑 مسح كل التقدم</button>
+
+</div>
+
+</div>
+
+<div class="quiz" id="quiz">
+<h3>🧠 اختبر حفظك!</h3>
+<p id="q"></p>
+<div id="quizOptions"></div>
+<p id="quizResult" class="message"></p>
+<button id="continueBtn" class="green" style="display:none" onclick="closeQuiz()">متابعة 🌟</button>
+</div>
+
+<audio id="audio"></audio>
+
+<audio id="kids"
+src="https://www.soundjay.com/human/kids-cheering-01.mp3">
+</audio>
+
+<footer>
+🌙 القرآن الكريم نور قلوبنا 🌙
+</footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+const names=[
+"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
+];
+
+let surah=document.getElementById("surah");
+let reciter=document.getElementById("reciter");
+let text=document.getElementById("text");
+let info=document.getElementById("info");
+let audio=document.getElementById("audio");
+let kids=document.getElementById("kids");
+let myRec=document.getElementById("myRec");
+
+let surahIndex=0;
+let ayahIndex=0;
+let ayahs=[];
+let repeat=false;
+let repeatRemaining=0;
+let currentQuizAnswer=null;
+let quizAnswered=false;
+let isHidden=false;
+let tafseerCache={};
+let currentReview=false;
+let compareMode=false;
+let segStart=null;
+let segEnd=null;
+let resetArmed=false;
+
+const STORAGE_KEY="quranKidsProgress_v1";
+const REVIEW_DAYS=3;
+
+let progressData={};
+
+// ---------- أدوات عامة ----------
+
+function pad(n){return n<10?"0"+n:""+n;}
+
+function dateKey(d){
+return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+}
+
+function todayKey(){return dateKey(new Date());}
+
+function yesterdayKey(){
+let d=new Date();
+d.setDate(d.getDate()-1);
+return dateKey(d);
+}
+
+function shuffle(arr){
+return arr.sort(()=>Math.random()-0.5);
+}
+
+let toastTimer=null;
+function showToast(msg){
+let t=document.getElementById("toast");
+t.innerText=msg;
+t.classList.add("show");
+clearTimeout(toastTimer);
+toastTimer=setTimeout(()=>{t.classList.remove("show");},3200);
+}
+
+function playCheer(){
+try{
+kids.currentTime=0;
+kids.play().catch(()=>{});
+}catch(e){}
+}
+
+// ---------- التقدم ----------
+
+function defaultProgress(){
+return{
+points:0,
+stars:0,
+lastSurah:0,
+lastAyah:0,
+memorizedSurahs:[],
+completedSurahs:[],
+streak:0,
+bestStreak:0,
+lastGoalDate:"",
+goalDoneDate:"",
+dailyGoal:3,
+todayDate:"",
+todayKeys:[],
+history:{},
+badges:[],
+reviewDates:{},
+totalRecited:0,
+perfectCount:0,
+quizCorrect:0
+};
+}
+
+// قراءة التقدم القديم والجديد
+function readProgress(){
+
+let d=defaultProgress();
+
+try{
+
+let saved=localStorage.getItem(STORAGE_KEY);
+
+if(saved){
+
+let s=JSON.parse(saved)||{};
+
+d.points=Number(s.points)||0;
+d.stars=Number(s.stars)||0;
+d.lastSurah=Number(s.lastSurah)||0;
+d.lastAyah=Number(s.lastAyah)||0;
+
+d.memorizedSurahs=Array.isArray(s.memorizedSurahs)?s.memorizedSurahs:[];
+d.completedSurahs=Array.isArray(s.completedSurahs)?s.completedSurahs:[];
+
+d.streak=Number(s.streak)||0;
+d.bestStreak=Number(s.bestStreak)||0;
+d.lastGoalDate=typeof s.lastGoalDate==="string"?s.lastGoalDate:"";
+d.goalDoneDate=typeof s.goalDoneDate==="string"?s.goalDoneDate:"";
+
+let g=Number(s.dailyGoal);
+d.dailyGoal=[1,2,3,5,10].includes(g)?g:3;
+
+d.todayDate=typeof s.todayDate==="string"?s.todayDate:"";
+d.todayKeys=Array.isArray(s.todayKeys)?s.todayKeys:[];
+
+d.history=(s.history&&typeof s.history==="object")?s.history:{};
+d.badges=Array.isArray(s.badges)?s.badges:[];
+d.reviewDates=(s.reviewDates&&typeof s.reviewDates==="object")?s.reviewDates:{};
+
+d.totalRecited=Number(s.totalRecited)||0;
+d.perfectCount=Number(s.perfectCount)||0;
+d.quizCorrect=Number(s.quizCorrect)||0;
+
+}
+
+}catch(e){}
+
+progressData=d;
+
+// السور المحفوظة قبل التحديث تاخد تاريخ مراجعة النهارده
+progressData.memorizedSurahs.forEach(i=>{
+if(!progressData.reviewDates[i]){
+progressData.reviewDates[i]=Date.now();
+}
+});
+
+ensureToday();
+
+}
+
+function ensureToday(){
+
+let t=todayKey();
+
+if(progressData.todayDate!==t){
+progressData.todayDate=t;
+progressData.todayKeys=[];
+}
+
+}
+
+// حفظ التقدم
+function saveProgress(){
+
+progressData.lastSurah=surahIndex;
+progressData.lastAyah=ayahIndex;
+
+ensureToday();
+checkBadges();
+
+try{
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(progressData)
+);
+
+}catch(e){}
+
+updateStats();
+
+}
+
+function currentStreak(){
+
+let l=progressData.lastGoalDate;
+
+if(l===todayKey()||l===yesterdayKey()){
+return progressData.streak;
+}
+
+return 0;
+
+}
+
+// تحديث النقاط والنجوم
+function updateStats(){
+
+document.getElementById("points").innerText=
+progressData.points;
+
+document.getElementById("stars").innerText=
+progressData.stars;
+
+document.getElementById("streak").innerText=
+currentStreak();
+
+document.getElementById("lastSurah").innerText=
+names[progressData.lastSurah]||"الفاتحة";
+
+let goal=progressData.dailyGoal;
+let done=progressData.todayKeys.length;
+
+document.getElementById("goalFill").style.width=
+Math.min(100,Math.round(done/goal*100))+"%";
+
+document.getElementById("goalText").innerText=
+done>=goal
+?"✅ أنجزت هدف اليوم! ("+done+" آيات)"
+:done+" من "+goal+" آيات اليوم";
+
+renderBadges();
+
+}
+
+// ---------- الشارات ----------
+
+const BADGES=[
+{id:"first",icon:"🌱",title:"أول آية",ok:p=>p.totalRecited>=1},
+{id:"ten",icon:"📗",title:"10 آيات",ok:p=>p.totalRecited>=10},
+{id:"fifty",icon:"📚",title:"50 آية",ok:p=>p.totalRecited>=50},
+{id:"perfect",icon:"💯",title:"تسميع كامل",ok:p=>p.perfectCount>=1},
+{id:"streak3",icon:"🔥",title:"3 أيام متتالية",ok:p=>Math.max(p.streak,p.bestStreak)>=3},
+{id:"streak7",icon:"🌟",title:"7 أيام متتالية",ok:p=>Math.max(p.streak,p.bestStreak)>=7},
+{id:"surah1",icon:"🏆",title:"أول سورة",ok:p=>p.completedSurahs.length>=1},
+{id:"surah5",icon:"👑",title:"5 سور",ok:p=>p.completedSurahs.length>=5},
+{id:"points100",icon:"⭐",title:"100 نقطة",ok:p=>p.points>=100},
+{id:"quiz10",icon:"🧠",title:"10 إجابات صح",ok:p=>p.quizCorrect>=10}
+];
+
+function checkBadges(){
+
+BADGES.forEach(b=>{
+
+if(!progressData.badges.includes(b.id) && b.ok(progressData)){
+
+progressData.badges.push(b.id);
+
+showToast("🎖 شارة جديدة: "+b.title);
+
+}
+
+});
+
+}
+
+function renderBadges(){
+
+let box=document.getElementById("badgesBox");
+
+box.innerHTML="";
+
+BADGES.forEach(b=>{
+
+let earned=progressData.badges.includes(b.id);
+
+let div=document.createElement("div");
+
+div.className="badge"+(earned?"":" locked");
+
+let ic=document.createElement("span");
+ic.className="ic";
+ic.innerText=b.icon;
+
+let t=document.createElement("span");
+t.innerText=b.title;
+
+div.appendChild(ic);
+div.appendChild(t);
+
+box.appendChild(div);
+
+});
+
+}
+
+// قائمة السور
+for(let i=0;i<114;i++){
+
+let o=document.createElement("option");
+
+o.value=i;
+o.text=(i+1)+" - "+names[i];
+
+surah.appendChild(o);
+
+}
+
+// بدء التطبيق
+readProgress();
+
+surahIndex=Math.min(113,Math.max(0,progressData.lastSurah));
+
+ayahIndex=Math.max(0,progressData.lastAyah);
+
+surah.value=surahIndex;
+
+updateStats();
+refreshReviewList();
+load();
+
+// ---------- تحميل السورة ----------
+
+function load(){
+
+audio.pause();
+
+document.getElementById("quiz").style.display="none";
+
+isHidden=false;
+document.getElementById("hideBtn").innerText="🤫 إخفاء الآية";
+
+document.getElementById("tafseerBox").style.display="none";
+
+text.innerText="جاري تحميل السورة...";
+info.innerText="يرجى الانتظار";
+
+fetch("https://api.alquran.cloud/v1/surah/"+(surahIndex+1))
+
+.then(r=>{
+
+if(!r.ok) throw new Error("Network error");
+
+return r.json();
+
+})
+
+.then(d=>{
+
+if(!d.data || !d.data.ayahs){
+throw new Error("Invalid data");
+}
+
+ayahs=d.data.ayahs;
+
+if(ayahIndex>=ayahs.length){
+ayahIndex=0;
+}
+
+show();
+
+})
+
+.catch(()=>{
+
+text.innerText="تعذر تحميل السورة. تأكد من اتصال الإنترنت ثم أعد المحاولة.";
+
+info.innerText="";
+
+});
+
+}
+
+// تغيير السورة
+function changeSurah(){
+
+surahIndex=parseInt(surah.value);
+
+ayahIndex=0;
+
+repeatRemaining=0;
+currentReview=false;
+
+load();
+
+}
+
+// عرض الآية
+function show(){
+
+if(!ayahs.length || !ayahs[ayahIndex]) return;
+
+isHidden=false;
+
+document.getElementById("hideBtn").innerText="🤫 إخفاء الآية";
+
+let a=ayahs[ayahIndex].text;
+
+if(ayahIndex===0 && surahIndex!==8){
+a="﷽\n\n"+a;
+}
+
+text.innerText=a;
+
+info.innerText=
+"سورة "+names[surahIndex]+
+" | آية "+(ayahIndex+1)+
+" من "+ayahs.length;
+
+let percent=Math.round(
+((ayahIndex+1)/ayahs.length)*100
+);
+
+document.getElementById("progressFill").style.width=
+percent+"%";
+
+document.getElementById("progressText").innerText=
+percent+"% من السورة";
+
+document.getElementById("tafseerBox").style.display="none";
+
+// تصفير نتيجة التسميع والمقطع
+let rr=document.getElementById("recogResult");
+rr.style.display="none";
+rr.innerHTML="";
+document.getElementById("recogMessage").innerText="";
+clearSeg(false);
+
+saveProgress();
+
+}
+
+// إخفاء وإظهار الآية
+function toggleHide(){
+
+if(!ayahs.length || !ayahs[ayahIndex]) return;
+
+isHidden=!isHidden;
+
+if(isHidden){
+
+text.innerHTML='<span class="hidden-ayah">🤫 حاول تفتكر الآية بنفسك!</span>';
+
+document.getElementById("hideBtn").innerText="👀 إظهار الآية";
+
+document.getElementById("memorizeMessage").innerText=
+"ممتاز! حاول التسميع من ذاكرتك.";
+
+}else{
+
+show();
+
+document.getElementById("memorizeMessage").innerText=
+"راجع الآية وتأكد من حفظك لها.";
+
+}
+
+}
+
+// ---------- المحفوظات والمراجعة ----------
+
+function markMemorized(){
+
+if(!progressData.memorizedSurahs.includes(surahIndex)){
+
+progressData.memorizedSurahs.push(surahIndex);
+progressData.reviewDates[surahIndex]=Date.now();
+
+saveProgress();
+refreshReviewList();
+
+document.getElementById("memorizeMessage").innerText=
+"👏 تمت إضافة سورة "+names[surahIndex]+" إلى قائمة المراجعة.";
+
+}else{
+
+document.getElementById("memorizeMessage").innerText=
+"هذه السورة موجودة بالفعل في قائمة المحفوظات.";
+
+}
+
+}
+
+function completeSurah(){
+
+if(progressData.completedSurahs.includes(surahIndex)){
+
+document.getElementById("memorizeMessage").innerText=
+"⭐ لقد سجلت إتمام حفظ هذه السورة من قبل. أحسنت!";
+
+return;
+
+}
+
+progressData.completedSurahs.push(surahIndex);
+
+if(!progressData.memorizedSurahs.includes(surahIndex)){
+progressData.memorizedSurahs.push(surahIndex);
+}
+
+progressData.reviewDates[surahIndex]=Date.now();
+
+progressData.points+=50;
+progressData.stars+=3;
+
+saveProgress();
+refreshReviewList();
+
+document.getElementById("memorizeMessage").innerText=
+"🏆 مبروك! أتممت حفظ سورة "+names[surahIndex]+" وحصلت على 50 نقطة و3 نجوم!";
+
+playCheer();
+
+}
+
+function isDue(i){
+
+let t=progressData.reviewDates[i];
+
+if(!t) return true;
+
+return (Date.now()-t)>REVIEW_DAYS*86400000;
+
+}
+
+function markReviewed(i){
+
+progressData.reviewDates[i]=Date.now();
+
+}
+
+// تحديث قائمة المراجعة
+function refreshReviewList(){
+
+let list=document.getElementById("reviewSurah");
+
+list.innerHTML='<option value="">اختر سورة للمراجعة</option>';
+
+let due=[];
+
+progressData.memorizedSurahs.forEach(index=>{
+
+let option=document.createElement("option");
+
+let d=isDue(index);
+
+option.value=index;
+option.text=(d?"⏰ ":"")+(index+1)+" - "+names[index];
+
+if(d) due.push(names[index]);
+
+list.appendChild(option);
+
+});
+
+let box=document.getElementById("dueMessage");
+
+if(!progressData.memorizedSurahs.length){
+
+box.innerText="أضف سورًا إلى قائمة المحفوظات لتظهر هنا.";
+
+}else if(due.length){
+
+box.innerText="⏰ سور محتاجة مراجعة: "+due.join("، ");
+
+}else{
+
+box.innerText="✅ كل السور المحفوظة تمت مراجعتها حديثًا. ما شاء الله!";
+
+}
+
+}
+
+// بدء مراجعة سورة محفوظة
+function startReview(){
+
+let selected=document.getElementById("reviewSurah").value;
+
+if(selected===""){
+
+document.getElementById("reviewMessage").innerText=
+"اختر سورة من قائمة السور المحفوظة أولًا.";
+
+return;
+
+}
+
+surahIndex=Number(selected);
+ayahIndex=0;
+currentReview=true;
+
+surah.value=surahIndex;
+
+repeatRemaining=0;
+
+document.getElementById("reviewMessage").innerText=
+"🌟 بدأت مراجعة سورة "+names[surahIndex];
+
+load();
+
+}
+
+// مراجعة أقدم سورة
+function reviewOldest(){
+
+if(!progressData.memorizedSurahs.length){
+
+document.getElementById("reviewMessage").innerText=
+"لا توجد سور محفوظة بعد.";
+
+return;
+
+}
+
+let oldest=progressData.memorizedSurahs[0];
+
+progressData.memorizedSurahs.forEach(i=>{
+
+if((progressData.reviewDates[i]||0)<(progressData.reviewDates[oldest]||0)){
+oldest=i;
+}
+
+});
+
+document.getElementById("reviewSurah").value=oldest;
+
+startReview();
+
+}
+
+// ---------- الصوت ----------
+
+function getAudioUrl(){
+
+let id=ayahs[ayahIndex].number;
+
+let r=reciter.value;
+
+if(r==="afasy"){
+return "https://cdn.islamic.network/quran/audio/128/ar.alafasy/"+id+".mp3";
+}
+
+if(r==="husary"){
+return "https://cdn.islamic.network/quran/audio/128/ar.husary/"+id+".mp3";
+}
+
+if(r==="minshawi"){
+return "https://cdn.islamic.network/quran/audio/128/ar.minshawi/"+id+".mp3";
+}
+
+return "";
+
+}
+
+function currentSpeed(){
+
+return Number(document.getElementById("speed").value)||1;
+
+}
+
+function changeSpeed(){
+
+audio.defaultPlaybackRate=currentSpeed();
+audio.playbackRate=currentSpeed();
+
+}
+
+// تشغيل الصوت الحالي
+function playCurrentAudio(){
+
+if(!ayahs.length || !ayahs[ayahIndex]) return;
+
+audio.defaultPlaybackRate=currentSpeed();
+
+audio.src=getAudioUrl();
+
+audio.load();
+
+audio.playbackRate=currentSpeed();
+
+audio.play().catch(()=>{
+
+info.innerText="اضغط تشغيل مرة أخرى إذا لم يبدأ الصوت.";
+
+});
+
+}
+
+// تشغيل الآية
+function play(){
+
+if(!ayahs.length) return;
+
+compareMode=false;
+
+repeatRemaining=
+Math.max(0,Number(document.getElementById("repeatCount").value)-1);
+
+playCurrentAudio();
+
+}
+
+// انتهاء الآية
+audio.onended=function(){
+
+if(compareMode){
+
+compareMode=false;
+
+myRec.currentTime=0;
+myRec.play().catch(()=>{});
+
+return;
+
+}
+
+if(segStart!==null && segEnd!==null){
+
+audio.currentTime=segStart;
+audio.play().catch(()=>{});
+
+return;
+
+}
+
+if(repeat){
+
+playCurrentAudio();
+
+return;
+
+}
+
+if(repeatRemaining>0){
+
+repeatRemaining--;
+
+playCurrentAudio();
+
+return;
+
+}
+
+next();
+
+};
+
+// تكرار المقطع
+audio.ontimeupdate=function(){
+
+if(segStart!==null && segEnd!==null && audio.currentTime>=segEnd){
+
+audio.currentTime=segStart;
+
+if(audio.paused){
+audio.play().catch(()=>{});
+}
+
+}
+
+};
+
+function markSegStart(){
+
+let m=document.getElementById("segMessage");
+
+if(!audio.src || audio.paused && audio.currentTime===0){
+m.innerText="شغّل الآية أولًا ثم اضغط بداية المقطع.";
+return;
+}
+
+segStart=audio.currentTime;
+segEnd=null;
+
+m.innerText="📍 تم تحديد البداية. اضغط نهاية المقطع عند المكان المطلوب.";
+
+}
+
+function markSegEnd(){
+
+let m=document.getElementById("segMessage");
+
+if(segStart===null){
+m.innerText="حدد بداية المقطع أولًا.";
+return;
+}
+
+if(audio.currentTime<=segStart+0.3){
+m.innerText="النهاية لازم تكون بعد البداية بثانية على الأقل.";
+return;
+}
+
+segEnd=audio.currentTime;
+
+m.innerText="🔁 المقطع بيتكرر من "+segStart.toFixed(1)+" إلى "+segEnd.toFixed(1)+" ثانية.";
+
+}
+
+function clearSeg(showMsg){
+
+segStart=null;
+segEnd=null;
+
+document.getElementById("segMessage").innerText=
+showMsg?"تم إلغاء تكرار المقطع.":"";
+
+}
+
+// التالي
+function next(){
+
+if(!ayahs.length) return;
+
+if(ayahIndex<ayahs.length-1){
+
+ayahIndex++;
+
+show();
+
+play();
+
+}else{
+
+if(progressData.memorizedSurahs.includes(surahIndex)){
+
+markReviewed(surahIndex);
+
+saveProgress();
+refreshReviewList();
+
+}
+
+quiz();
+
+}
+
+}
+
+// السابق
+function prev(){
+
+if(!ayahs.length) return;
+
+if(ayahIndex>0){
+
+ayahIndex--;
+
+repeatRemaining=0;
+
+show();
+
+play();
+
+}
+
+}
+
+// إيقاف
+function pause(){
+
+compareMode=false;
+
+audio.pause();
+
+}
+
+// التكرار المستمر
+function repeatToggle(){
+
+repeat=!repeat;
+
+document.getElementById("rep").innerText=
+repeat?"ON":"OFF";
+
+}
+
+// السورة التالية
+function nextSurah(){
+
+if(surahIndex<113){
+
+surahIndex++;
+
+surah.value=surahIndex;
+
+ayahIndex=0;
+
+repeatRemaining=0;
+currentReview=false;
+
+load();
+
+}
+
+}
+
+// السورة السابقة
+function prevSurah(){
+
+if(surahIndex>0){
+
+surahIndex--;
+
+surah.value=surahIndex;
+
+ayahIndex=0;
+
+repeatRemaining=0;
+currentReview=false;
+
+load();
+
+}
+
+}
+
+// ---------- التفسير ----------
+
+async function getSurahTafseer(){
+
+let number=surahIndex+1;
+
+if(tafseerCache[number]){
+return tafseerCache[number];
+}
+
+let response=await fetch(
+"https://alfurqan.online/api/v1/tafseer/muyassar/surah/"+number
+);
+
+if(!response.ok){
+throw new Error("Tafseer network error");
+}
+
+let data=await response.json();
+
+let tafseerAyahs=
+data.surah && Array.isArray(data.surah.ayahs)
+?data.surah.ayahs:null;
+
+if(!tafseerAyahs){
+throw new Error("Tafseer format error");
+}
+
+tafseerCache[number]=tafseerAyahs;
+
+return tafseerAyahs;
+
+}
+
+async function showTafseer(){
+
+if(!ayahs.length || !ayahs[ayahIndex]){
+
+return;
+
+}
+
+let box=document.getElementById("tafseerBox");
+let title=document.getElementById("tafseerTitle");
+let content=document.getElementById("tafseerText");
+
+box.style.display="block";
+
+title.innerText=
+"تفسير سورة "+names[surahIndex]+" - الآية "+(ayahIndex+1);
+
+content.innerText="جاري تحميل التفسير...";
+
+try{
+
+let tafseerAyahs=await getSurahTafseer();
+
+let currentTafseer=tafseerAyahs.find(item=>
+Number(item.ayah)===(ayahIndex+1)
+);
+
+if(!currentTafseer || !currentTafseer.text){
+
+content.innerText="التفسير غير متاح لهذه الآية حاليًا.";
+
+return;
+
+}
+
+content.innerText=currentTafseer.text;
+
+}catch(e){
+
+content.innerText=
+"تعذر تحميل التفسير حاليًا. تأكد من اتصال الإنترنت وحاول مرة أخرى.";
+
+}
+
+}
+
+// ---------- تطبيع النص والمقارنة ----------
+
+function norm(s){
+
+return String(s)
+.replace(/[\u0640\u064B-\u065F\u0670\u06D6-\u06ED\u08D3-\u08FF]/g,"")
+.replace(/[أإآٱ]/g,"ا")
+.replace(/ى/g,"ي")
+.replace(/ة/g,"ه")
+.replace(/ؤ/g,"و")
+.replace(/ئ/g,"ي")
+.replace(/[^\u0621-\u064A\s]/g," ")
+.replace(/\s+/g," ")
+.trim();
+
+}
+
+function lev(a,b){
+
+let m=a.length,n=b.length;
+
+if(!m) return n;
+if(!n) return m;
+
+let prev=[];
+for(let j=0;j<=n;j++) prev[j]=j;
+
+for(let i=1;i<=m;i++){
+
+let cur=[i];
+
+for(let j=1;j<=n;j++){
+
+let cost=a[i-1]===b[j-1]?0:1;
+
+cur[j]=Math.min(
+prev[j]+1,
+cur[j-1]+1,
+prev[j-1]+cost
+);
+
+}
+
+prev=cur;
+
+}
+
+return prev[n];
+
+}
+
+function similar(a,b){
+
+if(a===b) return true;
+
+let L=Math.max(a.length,b.length);
+
+if(L<4) return false;
+
+return lev(a,b)<=(L>=8?2:1);
+
+}
+
+function alignWords(target,spoken){
+
+let n=target.length,m=spoken.length;
+
+let dp=[];
+
+for(let i=0;i<=n;i++){
+dp.push(new Array(m+1).fill(0));
+}
+
+for(let i=1;i<=n;i++){
+for(let j=1;j<=m;j++){
+
+if(similar(target[i-1],spoken[j-1])){
+dp[i][j]=dp[i-1][j-1]+1;
+}else{
+dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+}
+
+}
+}
+
+let matchedT=new Array(n).fill(false);
+let matchedS=new Array(m).fill(false);
+
+let i=n,j=m;
+
+while(i>0 && j>0){
+
+if(similar(target[i-1],spoken[j-1]) && dp[i][j]===dp[i-1][j-1]+1){
+
+matchedT[i-1]=true;
+matchedS[j-1]=true;
+i--;
+j--;
+
+}else if(dp[i-1][j]>=dp[i][j-1]){
+
+i--;
+
+}else{
+
+j--;
+
+}
+
+}
+
+return {matchedT:matchedT,matchedS:matchedS,count:dp[n][m]};
+
+}
+
+function getTarget(){
+
+let all=ayahs[ayahIndex].text.split(/\s+/).filter(Boolean);
+
+let orig=[],nw=[];
+
+all.forEach(w=>{
+
+let n=norm(w).replace(/\s/g,"");
+
+if(n){
+orig.push(w);
+nw.push(n);
+}
+
+});
+
+// حذف البسملة من أول آية (غير الفاتحة والتوبة)
+if(ayahIndex===0 && surahIndex!==0 && surahIndex!==8 && nw.length>4){
+
+let b=["بسم","الله","الرحمن","الرحيم"];
+
+if(b.every((x,i)=>nw[i]===x)){
+orig=orig.slice(4);
+nw=nw.slice(4);
+}
+
+}
+
+return {orig:orig,nw:nw};
+
+}
+
+// ---------- التسميع والتصحيح التلقائي ----------
+
+let recognition=null;
+let listening=false;
+
+function startRecognition(){
+
+let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+
+let msg=document.getElementById("recogMessage");
+let btn=document.getElementById("recogBtn");
+
+if(!SR){
+
+msg.innerText="❌ التعرف على الكلام غير مدعوم هنا. جرّب فتح التطبيق في متصفح كروم.";
+
+return;
+
+}
+
+if(!ayahs.length || !ayahs[ayahIndex]) return;
+
+if(listening){
+
+try{recognition.stop();}catch(e){}
+
+return;
+
+}
+
+audio.pause();
+compareMode=false;
+
+document.getElementById("recogResult").style.display="none";
+
+recognition=new SR();
+
+recognition.lang="ar-SA";
+recognition.interimResults=false;
+recognition.continuous=false;
+recognition.maxAlternatives=3;
+
+let gotResult=false;
+let hadError=false;
+
+recognition.onstart=function(){
+
+listening=true;
+
+btn.innerText="⏹ إنهاء التسميع";
+
+msg.innerText="🎙 جاري الاستماع... اقرأ الآية الآن";
+
+};
+
+recognition.onresult=function(ev){
+
+gotResult=true;
+
+let res=ev.results[ev.results.length-1];
+
+evaluateRecitation(res);
+
+};
+
+recognition.onerror=function(ev){
+
+hadError=true;
+
+let e=ev.error;
+
+if(e==="not-allowed" || e==="service-not-allowed"){
+msg.innerText="❌ الميكروفون غير مسموح. اسمح بالميكروفون من إعدادات المتصفح أو التطبيق.";
+}else if(e==="no-speech"){
+msg.innerText="لم أسمع صوتًا. قرّب الميكروفون وحاول مرة أخرى.";
+}else if(e==="network"){
+msg.innerText="❌ التعرف على الكلام يحتاج إنترنت. تأكد من الاتصال.";
+}else if(e==="audio-capture"){
+msg.innerText="❌ لم يتم العثور على ميكروفون.";
+}else{
+msg.innerText="حدثت مشكلة ("+e+"). حاول مرة أخرى.";
+}
+
+};
+
+recognition.onend=function(){
+
+listening=false;
+
+btn.innerText="🎤 سمّع وصحّح";
+
+if(!gotResult && !hadError){
+msg.innerText="لم أسمع شيئًا، حاول مرة أخرى.";
+}
+
+};
+
+try{
+
+recognition.start();
+
+}catch(e){
+
+msg.innerText="تعذر بدء التسميع. حاول مرة أخرى.";
+
+}
+
+}
+
+function evaluateRecitation(result){
+
+let msg=document.getElementById("recogMessage");
+
+let t=getTarget();
+
+let best=null;
+
+for(let k=0;k<result.length;k++){
+
+let raw=result[k].transcript;
+
+let sw=norm(raw).split(" ").filter(Boolean);
+
+let al=alignWords(t.nw,sw);
+
+if(!best || al.count>best.al.count){
+best={sw:sw,al:al,raw:raw};
+}
+
+}
+
+if(!best || !best.sw.length){
+
+msg.innerText="لم أفهم الكلام، حاول مرة أخرى بصوت أوضح.";
+
+return;
+
+}
+
+let score=t.nw.length?Math.round(best.al.count/t.nw.length*100):0;
+
+let extras=best.sw.filter((w,i)=>!best.al.matchedS[i]);
+
+renderRecitation(t.orig,best.al.matchedT,best.raw,extras,score);
+
+rewardRecitation(score);
+
+}
+
+function renderRecitation(orig,matchedT,raw,extras,score){
+
+let msg=document.getElementById("recogMessage");
+let box=document.getElementById("recogResult");
+
+box.innerHTML="";
+box.style.display="block";
+
+let head=document.createElement("div");
+head.className="score";
+
+let label;
+
+if(score>=90) label="🌟 ممتاز!";
+else if(score>=70) label="👏 جيد جدًا";
+else if(score>=40) label="🌱 قريب، حاول مرة أخرى";
+else label="🔁 حاول مرة أخرى";
+
+head.innerText="النتيجة: "+score+"% — "+label;
+
+box.appendChild(head);
+
+let words=document.createElement("div");
+words.className="words";
+
+orig.forEach((w,i)=>{
+
+let s=document.createElement("span");
+
+s.className=matchedT[i]?"w-ok":"w-bad";
+
+s.innerText=w+" ";
+
+words.appendChild(s);
+
+});
+
+box.appendChild(words);
+
+let legend=document.createElement("div");
+legend.className="heard";
+legend.innerText="الأخضر = كلمة صح، الأحمر = كلمة ناقصة أو غلط.";
+box.appendChild(legend);
+
+let heard=document.createElement("div");
+heard.className="heard";
+heard.innerText="ما سمعه التطبيق: "+raw;
+box.appendChild(heard);
+
+if(extras.length){
+
+let ex=document.createElement("div");
+ex.className="heard";
+ex.innerText="كلمات زائدة أو غير مطابقة: "+extras.join("، ");
+box.appendChild(ex);
+
+}
+
+msg.innerText=score>=70?"أحسنت! 🎉":"ما تيأسش، كرر الآية واسمعها وجرّب تاني.";
+
+}
+
+function rewardRecitation(score){
+
+if(score===100){
+progressData.perfectCount++;
+}
+
+if(score<70){
+saveProgress();
+return;
+}
+
+ensureToday();
+
+let key=surahIndex+":"+ayahIndex;
+
+if(!progressData.todayKeys.includes(key)){
+
+progressData.todayKeys.push(key);
+progressData.totalRecited++;
+progressData.points+=5;
+
+if(score>=95){
+progressData.points+=5;
+}
+
+progressData.history[progressData.todayDate]=progressData.todayKeys.length;
+
+showToast("⭐ +5 نقاط");
+
+if(progressData.todayKeys.length>=progressData.dailyGoal
+&& progressData.goalDoneDate!==progressData.todayDate){
+
+progressData.goalDoneDate=progressData.todayDate;
+
+progressData.streak=
+(progressData.lastGoalDate===yesterdayKey())
+?progressData.streak+1:1;
+
+progressData.bestStreak=Math.max(progressData.bestStreak,progressData.streak);
+
+progressData.lastGoalDate=progressData.todayDate;
+
+progressData.points+=20;
+progressData.stars+=1;
+
+setTimeout(()=>{
+showToast("🎯 أنجزت هدف اليوم! +20 نقطة ونجمة 🔥");
+},1500);
+
+playCheer();
+
+}
+
+}
+
+saveProgress();
+
+}
+
+// ---------- تسجيل الصوت ----------
+
+let mediaRecorder=null;
+let recChunks=[];
+let recStream=null;
+let recUrl=null;
+let isRecording=false;
+
+async function toggleRecord(){
+
+let btn=document.getElementById("recBtn");
+let msg=document.getElementById("recMessage");
+
+if(isRecording){
+
+try{mediaRecorder.stop();}catch(e){}
+
+return;
+
+}
+
+if(!navigator.mediaDevices || !window.MediaRecorder){
+
+msg.innerText="❌ التسجيل غير مدعوم هنا. جرّب متصفح كروم.";
+
+return;
+
+}
+
+try{
+
+audio.pause();
+compareMode=false;
+
+recStream=await navigator.mediaDevices.getUserMedia({audio:true});
+
+recChunks=[];
+
+mediaRecorder=new MediaRecorder(recStream);
+
+mediaRecorder.ondataavailable=function(e){
+
+if(e.data && e.data.size>0){
+recChunks.push(e.data);
+}
+
+};
+
+mediaRecorder.onstop=function(){
+
+recStream.getTracks().forEach(t=>t.stop());
+
+isRecording=false;
+
+btn.innerText="🎙 سجّل صوتي";
+
+let blob=new Blob(recChunks,{type:mediaRecorder.mimeType||"audio/webm"});
+
+if(recUrl){
+URL.revokeObjectURL(recUrl);
+}
+
+recUrl=URL.createObjectURL(blob);
+
+myRec.src=recUrl;
+myRec.style.display="block";
+
+document.getElementById("compareBtn").style.display="inline-block";
+
+msg.innerText="✅ تم التسجيل. اسمع صوتك أو قارنه بالقارئ.";
+
+};
+
+mediaRecorder.start();
+
+isRecording=true;
+
+btn.innerText="⏹ إيقاف التسجيل";
+
+msg.innerText="🔴 جاري التسجيل... اقرأ الآية";
+
+}catch(e){
+
+msg.innerText="❌ تعذر تشغيل الميكروفون. تأكد من السماح بالميكروفون.";
+
+}
+
+}
+
+function compareRec(){
+
+if(!recUrl) return;
+
+if(!ayahs.length) return;
+
+compareMode=true;
+
+playCurrentAudio();
+
+}
+
+// ---------- كمّل الآية ----------
+
+function splitWords(t){
+
+return t.split(/\s+/).filter(w=>/[\u0621-\u064A\u0671]/.test(w));
+
+}
+
+function startCloze(){
+
+let msg=document.getElementById("clozeMsg");
+
+if(!ayahs.length){
+
+msg.innerText="انتظر حتى يتم تحميل السورة.";
+
+return;
+
+}
+
+let pool=[];
+
+for(let min=3;min>=2 && !pool.length;min--){
+
+for(let i=0;i<ayahs.length;i++){
+
+if(i===0 && ayahs.length>1) continue;
+
+if(splitWords(ayahs[i].text).length>=min){
+pool.push(i);
+}
+
+}
+
+}
+
+if(!pool.length){
+
+msg.innerText="هذه السورة قصيرة جدًا لاختبار كمّل الآية. جرّب سورة أخرى.";
+
+return;
+
+}
+
+msg.innerText="";
+
+let idx=pool[Math.floor(Math.random()*pool.length)];
+
+let words=splitWords(ayahs[idx].text);
+
+let cands=[];
+
+words.forEach((w,k)=>{
+if(norm(w).replace(/\s/g,"").length>=3) cands.push(k);
+});
+
+if(!cands.length){
+words.forEach((w,k)=>cands.push(k));
+}
+
+let h=cands[Math.floor(Math.random()*cands.length)];
+
+let correct=words[h];
+
+let correctNorm=norm(correct).replace(/\s/g,"");
+
+let all=[];
+
+ayahs.forEach(a=>{
+splitWords(a.text).forEach(w=>all.push(w));
+});
+
+let seen={};
+seen[correctNorm]=true;
+
+let distractors=[];
+
+shuffle(all.slice());
+
+all.slice().sort(()=>Math.random()-0.5).forEach(w=>{
+
+let n=norm(w).replace(/\s/g,"");
+
+if(n && !seen[n] && distractors.length<2){
+seen[n]=true;
+distractors.push(w);
+}
+
+});
+
+let fallback=["الله","الأرض","السماء","الرحيم","العظيم","الحمد"];
+
+fallback.forEach(w=>{
+
+let n=norm(w);
+
+if(!seen[n] && distractors.length<2){
+seen[n]=true;
+distractors.push(w);
+}
+
+});
+
+let options=shuffle([
+{t:correct,ok:true},
+{t:distractors[0],ok:false},
+{t:distractors[1],ok:false}
+]);
+
+document.getElementById("clozeArea").style.display="block";
+
+document.getElementById("clozeQ").innerText=
+words.map((w,k)=>k===h?"_____":w).join(" ");
+
+document.getElementById("clozeResult").innerText="";
+document.getElementById("clozeNext").style.display="none";
+
+let c=document.getElementById("clozeOptions");
+
+c.innerHTML="";
+
+let answered=false;
+
+options.forEach(o=>{
+
+let b=document.createElement("button");
+
+b.className="quiz-option";
+b.innerText=o.t;
+
+b.onclick=function(){
+
+if(answered) return;
+
+answered=true;
+
+let res=document.getElementById("clozeResult");
+
+if(o.ok){
+
+progressData.points+=5;
+progressData.quizCorrect++;
+
+saveProgress();
+
+res.innerText="👏 أحسنت! +5 نقاط";
+
+playCheer();
+
+}else{
+
+res.innerText="🌱 الإجابة الصحيحة: "+correct;
+
+}
+
+c.querySelectorAll("button").forEach(x=>{x.disabled=true;});
+
+document.getElementById("clozeNext").style.display="inline-block";
+
+};
+
+c.appendChild(b);
+
+});
+
+}
+
+// ---------- اختبار الحفظ (آخر السورة) ----------
+
+function quiz(){
+
+if(!ayahs.length || ayahs.length<2) return;
+
+audio.pause();
+
+let previousIndex=
+Math.floor(Math.random()*(ayahs.length-1));
+
+let correctIndex=previousIndex+1;
+
+let correctText=ayahs[correctIndex].text;
+
+let questionText=ayahs[previousIndex].text;
+
+let availableIndexes=[];
+
+for(let i=0;i<ayahs.length;i++){
+
+if(i!==correctIndex){
+availableIndexes.push(i);
+}
+
+}
+
+availableIndexes.sort(()=>Math.random()-0.5);
+
+let options=[
+{
+text:correctText,
+correct:true
+}
+];
+
+for(let i=0;i<availableIndexes.length && options.length<3;i++){
+
+let candidate=ayahs[availableIndexes[i]].text;
+
+if(!options.some(o=>o.text===candidate)){
+
+options.push({
+text:candidate,
+correct:false
+});
+
+}
+
+}
+
+options.sort(()=>Math.random()-0.5);
+
+currentQuizAnswer=null;
+quizAnswered=false;
+
+document.getElementById("quiz").style.display="block";
+
+document.getElementById("q").innerText=
+"ما الآية التي تأتي بعد هذه الآية؟\n\n"+
+questionText;
+
+document.getElementById("quizResult").innerText="";
+
+document.getElementById("continueBtn").style.display="none";
+
+let container=document.getElementById("quizOptions");
+
+container.innerHTML="";
+
+options.forEach(option=>{
+
+let btn=document.createElement("button");
+
+btn.className="quiz-option";
+
+btn.innerText=option.text;
+
+btn.onclick=function(){
+
+if(quizAnswered) return;
+
+quizAnswered=true;
+
+if(option.correct){
+
+progressData.points+=10;
+progressData.stars+=1;
+progressData.quizCorrect++;
+
+saveProgress();
+
+document.getElementById("quizResult").innerText=
+"👏 أحسنت! إجابة صحيحة. حصلت على 10 نقاط ونجمة ⭐";
+
+playCheer();
+
+}else{
+
+document.getElementById("quizResult").innerText=
+"🌱 حاول مرة أخرى في المراجعة. لا تستسلم!";
+
+}
+
+container.querySelectorAll("button").forEach(b=>{
+b.disabled=true;
+});
+
+document.getElementById("continueBtn").style.display="inline-block";
+
+};
+
+container.appendChild(btn);
+
+});
+
+}
+
+function closeQuiz(){
+
+document.getElementById("quiz").style.display="none";
+
+document.getElementById("continueBtn").style.display="none";
+
+}
+
+// ---------- صفحة ولي الأمر ----------
+
+function toggleParent(){
+
+let box=document.getElementById("parentBox");
+
+if(box.style.display==="none"){
+
+renderParent();
+
+box.style.display="block";
+
+}else{
+
+box.style.display="none";
+
+}
+
+}
+
+function addParentLine(container,textValue){
+
+let d=document.createElement("div");
+
+d.className="parent-line";
+
+d.innerText=textValue;
+
+container.appendChild(d);
+
+}
+
+function renderParent(){
+
+let p=progressData;
+
+let c=document.getElementById("parentStats");
+
+c.innerHTML="";
+
+addParentLine(c,"⭐ النقاط: "+p.points+"   |   🏅 النجوم: "+p.stars);
+
+addParentLine(c,"🔥 الأيام المتتالية الآن: "+currentStreak()+"   |   الأفضل: "+Math.max(p.bestStreak,p.streak));
+
+addParentLine(c,"🎯 اليوم: "+p.todayKeys.length+" من "+p.dailyGoal+" آيات");
+
+addParentLine(c,"📖 إجمالي الآيات التي سُمّعت صح: "+p.totalRecited);
+
+addParentLine(c,"🧠 إجابات صحيحة في الاختبارات: "+p.quizCorrect);
+
+addParentLine(c,"🏆 السور المكتملة: "+(p.completedSurahs.length?p.completedSurahs.map(i=>names[i]).join("، "):"لا يوجد بعد"));
+
+addParentLine(c,"📚 السور المحفوظة: "+(p.memorizedSurahs.length?p.memorizedSurahs.map(i=>names[i]).join("، "):"لا يوجد بعد"));
+
+let due=p.memorizedSurahs.filter(i=>isDue(i));
+
+addParentLine(c,"⏰ تحتاج مراجعة: "+(due.length?due.map(i=>names[i]).join("، "):"لا يوجد"));
+
+addParentLine(c,"🎖 الشارات: "+p.badges.length+" من "+BADGES.length);
+
+// رسم آخر 7 أيام
+let bars=document.getElementById("parentBars");
+
+bars.innerHTML="";
+
+let dayNames=["أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة","سبت"];
+
+let list=[];
+
+for(let k=6;k>=0;k--){
+
+let d=new Date();
+
+d.setDate(d.getDate()-k);
+
+let key=dateKey(d);
+
+list.push({
+day:dayNames[d.getDay()],
+count:Number(p.history[key])||0
+});
+
+}
+
+let max=Math.max(p.dailyGoal,...list.map(x=>x.count),1);
+
+list.forEach(x=>{
+
+let col=document.createElement("div");
+col.className="bar-col";
+
+let num=document.createElement("div");
+num.className="bar-num";
+num.innerText=x.count;
+
+let bar=document.createElement("div");
+bar.className="bar";
+bar.style.height=Math.round(x.count/max*85)+"%";
+
+let day=document.createElement("div");
+day.className="bar-day";
+day.innerText=x.day;
+
+col.appendChild(num);
+col.appendChild(bar);
+col.appendChild(day);
+
+bars.appendChild(col);
+
+});
+
+document.getElementById("goalSelect").value=String(p.dailyGoal);
+
+}
+
+function changeGoal(){
+
+let g=Number(document.getElementById("goalSelect").value);
+
+if([1,2,3,5,10].includes(g)){
+
+progressData.dailyGoal=g;
+
+saveProgress();
+
+renderParent();
+
+}
+
+}
+
+function resetAll(){
+
+let btn=document.getElementById("resetBtn");
+
+if(!resetArmed){
+
+resetArmed=true;
+
+btn.innerText="⚠️ اضغط مرة أخرى للتأكيد";
+
+setTimeout(()=>{
+resetArmed=false;
+btn.innerText="🗑 مسح كل التقدم";
+},5000);
+
+return;
+
+}
+
+try{
+localStorage.removeItem(STORAGE_KEY);
+}catch(e){}
+
+location.reload();
+
+}
+
+// تحديث الموضع عند إغلاق الصفحة
+window.addEventListener("beforeunload",function(){
+
+saveProgress();
+
+});
+
+</script>
+
+</body>
+  </html>
